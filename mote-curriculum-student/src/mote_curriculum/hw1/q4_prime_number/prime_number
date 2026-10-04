@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # Every node registers itself with the ROS master process, so we must pass a
     # name for the node. (A good practice is to use the same name as the script,
     # but it's up to you.)
-    rospy.init_node("prime_number")
+    rospy.init_node("prime_number") #start a ROS node
 
     # Here's an example to get parameters from ROS. Note that the name starts
     # with ~. Just name your parameters following this convention for now.
@@ -28,7 +28,8 @@ if __name__ == "__main__":
     # name matches the name in the launch file. Feel free to specify a default
     # value.
     # BEGIN QUESTION 4.2
-    "*** REPLACE THIS LINE ***"
+    prime_number = rospy.get_param("~test_number", 2011) #gets another ROS parameter, if dne, then use default 2011
+    prime_number = int(prime_number)
     # END QUESTION 4.2
 
     # Here's an example to create a ROS publisher. The queue_size defines how
@@ -44,18 +45,19 @@ if __name__ == "__main__":
     # what type of messages do we want to publish from our prime_number publisher?
     # (Hint: check the imports at the top of the file.)
     # BEGIN QUESTION 4.2
-    "*** REPLACE THIS LINE ***"
+    prime_publisher = rospy.Publisher(prime_topic, Bool, queue_size=1) #Create a publisher that sends Bool messages to whatever topic is stored in prime_topic
     # END QUESTION 4.2
 
     # It can take some time for the publisher to be ready, so we'll wait before
     # we start to publish. (The specific wait time isn't important, but for
-    # completeness, this waits for 2 seconds.)
-    rospy.sleep(2)
+    # completeness, this waits for 0.5 seconds.)
+    rospy.sleep(0.5)
 
-    example_publisher.publish("Hello World!")
+    example_publisher.publish("Hello World!") #sends "hello world" to "/hw1/example" 
 
     # Call is_prime_number with the test number you obtained earlier, then publish
     # a boolean result.
     # BEGIN QUESTION 4.2
-    "*** REPLACE THIS LINE ***"
+    is_prime = is_prime_number(prime_number)
+    prime_publisher.publish(is_prime)
     # END QUESTION 4.2

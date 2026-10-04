@@ -1,6 +1,0 @@
-<launch>
-  <test test-name="test_prime_number_subscriber"
-        pkg="hw1"
-        type="test_prime_number_subscriber.py"
-        time-limit="20" />
-</launch>

@@ -23,7 +23,7 @@ You will be able to pick up the robot on **Thursday September 10** to continue t
 
 Complete the "Getting Started" section of the [Mote documentation](https://empriselab.github.io/mote/). Be extra careful with the parts, we do not have spares!
 
-> Note: You can skip the Hello World section (if you want to run the demo, you'll have to install the [Mote Link Package](https://pypi.org/project/mote-link/) via `pip install mote_link[demo]`)
+> Note: You can skip the Hello World section (if you want to run the demo, you'll have to clone the [Mote Repo](https://github.com/empriselab/mote))
 
 > Note 2: **You shouldn't be trying to assemble the wheels.** Don't worry, the TAs will drill the wheels in for you during the inspection. 
 
@@ -147,9 +147,7 @@ Save this screenshot in [Deliverable 3 in `writeup.md`](./writeup/writeup.md#del
 
 ## Q3 Teleop
 
-# DO NOT RUN THE ROBOT ON A TABLE. THIS COMMAND WILL CAUSE THE ROBOT TO MOVE AND POTENTIALLY FALL OFF 
-
-Then open a new terminal (while running the visualization), and run a teleop node (MAKE SURE YOUR ROBBOT IS ON THE GROUND):
+Then open a new terminal (while running the visualization), and run a teleop node:
 
 ```
 rosrun teleop_twist_keyboard teleop_twist_keyboard.py _speed:=1.2 _turn:=2.0 _key_timeout:=0.6 cmd_vel:=/diff_drive_controller/cmd_vel
