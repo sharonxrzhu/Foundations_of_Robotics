@@ -8,6 +8,19 @@ If you're new to markdown, check out this reference: https://www.markdownguide.o
 
 **Q0.1:**
 
+\[
+\begin{aligned}
+&\text{Forward axis of \texttt{base\_link}: } +x \text{ (red axis).}\\
+&\text{\texttt{wheel\_left}: positive rotation when driving forward.}\\
+&\text{\texttt{wheel\_right}: positive rotation when driving forward.}
+\end{aligned}
+\]
+
+**Verification:** With the joystick, turning right gave positive
+\texttt{/joint\_states.velocity[0]} (left) and negative
+\texttt{/joint\_states.velocity[1]} (right). Therefore, driving forward
+gives positive velocity on both wheels.
+
 ## Q1. Identifying a Kinematic Model (20 pts)
 
 **Q1.1:** 
