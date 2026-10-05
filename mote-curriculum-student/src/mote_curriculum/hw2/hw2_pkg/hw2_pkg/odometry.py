@@ -24,12 +24,12 @@ class odometry:
         QUESTION 4.2 BEGINS
         """
         # create a TransformBroadcaster once so it can be reused in the callback
-
+        self.tf_broadcaster = tf.TransformBroadcaster()
         """
         QUESTION 4.2 ENDS
         """
 
-        self.last_twist_msg_time = 0
+        self.last_twist_msg_time = None
 
         self.last_twist = Twist()
 
@@ -39,7 +39,7 @@ class odometry:
         )
 
     def twist_callback(self, msg: TwistStamped):
-        if self.last_twist_msg_time == 0:
+        if self.last_twist_msg_time == None:
             self.last_twist_msg_time = msg.header.stamp
             self.last_twist = msg.twist
             return
@@ -78,7 +78,71 @@ class odometry:
         # ... update the message header, then ...
 
         # ... publish the message
+        # ---------------------------------------------------------
+        # 1. Set the twist in the Odometry message
+        # ---------------------------------------------------------
+        self.odometry_msg.twist.twist = self.last_twist
 
+        # ---------------------------------------------------------
+        # 2. Get the current yaw angle from the quaternion
+        # ---------------------------------------------------------
+        current_quaternion = [
+            self.odometry_msg.pose.pose.orientation.x,
+            self.odometry_msg.pose.pose.orientation.y,
+            self.odometry_msg.pose.pose.orientation.z,
+            self.odometry_msg.pose.pose.orientation.w
+        ]
+
+        roll, pitch, current_yaw = tf.transformations.euler_from_quaternion(
+            current_quaternion
+        )
+
+        # ---------------------------------------------------------
+        # 3. Calculate the new yaw
+        # ---------------------------------------------------------
+        new_yaw = current_yaw + angular_velocity * dt
+
+        # Convert the new yaw back into a quaternion
+        new_quaternion = tf.transformations.quaternion_from_euler(
+            0.0,
+            0.0,
+            new_yaw
+        )
+
+        self.odometry_msg.pose.pose.orientation = Quaternion(
+            x=new_quaternion[0],
+            y=new_quaternion[1],
+            z=new_quaternion[2],
+            w=new_quaternion[3]
+        )
+
+        # ---------------------------------------------------------
+        # 4. Update position using midpoint integration
+        # ---------------------------------------------------------
+        #
+        # The heading halfway through the timestep is:
+        #
+        #     theta_mid = theta + omega * dt / 2
+        #
+        # This is important because the rover may be turning.
+        #
+        midpoint_yaw = current_yaw + angular_velocity * dt / 2.0
+
+        dx = linear_velocity * math.cos(midpoint_yaw) * dt
+        dy = linear_velocity * math.sin(midpoint_yaw) * dt
+
+        self.odometry_msg.pose.pose.position.x += dx
+        self.odometry_msg.pose.pose.position.y += dy
+
+        # ---------------------------------------------------------
+        # 5. Update the timestamp
+        # ---------------------------------------------------------
+        self.odometry_msg.header.stamp = msg.header.stamp
+
+        # ---------------------------------------------------------
+        # 6. Publish the Odometry message
+        # ---------------------------------------------------------
+        self.odometry_publisher.publish(self.odometry_msg)
 
         """ 
         QUESTION 4.1 ENDS
@@ -92,6 +156,23 @@ class odometry:
         # use the TransformBroadcaster from __init__ to  broadcast a transform from "odom" to "base_link"
         # HINT: you can use tf.TransformBroadcaster.sendTransform to send the transform
         
+        # Broadcast the transform from odom -> base_link
+        self.tf_broadcaster.sendTransform(
+            (
+                self.odometry_msg.pose.pose.position.x,
+                self.odometry_msg.pose.pose.position.y,
+                self.odometry_msg.pose.pose.position.z
+            ),
+            (
+                self.odometry_msg.pose.pose.orientation.x,
+                self.odometry_msg.pose.pose.orientation.y,
+                self.odometry_msg.pose.pose.orientation.z,
+                self.odometry_msg.pose.pose.orientation.w
+            ),
+            msg.header.stamp,
+            "base_link",
+            "odom"
+        )        
 
         """
         QUESTION 4.2 ENDS
