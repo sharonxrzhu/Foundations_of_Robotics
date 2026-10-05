@@ -8,17 +8,13 @@ If you're new to markdown, check out this reference: https://www.markdownguide.o
 
 **Q0.1:**
 
-\[
-\begin{aligned}
-&\text{Forward axis of \texttt{base\_link}: } +x \text{ (red axis).}\\
-&\text{\texttt{wheel\_left}: positive rotation when driving forward.}\\
-&\text{\texttt{wheel\_right}: positive rotation when driving forward.}
-\end{aligned}
-\]
+- Forward axis of `base_link`: $+x$ (red axis).
+- `wheel_left`: positive rotation when driving forward.
+- `wheel_right`: positive rotation when driving forward.
 
 **Verification:** With the joystick, turning right gave positive
-\texttt{/joint\_states.velocity[0]} (left) and negative
-\texttt{/joint\_states.velocity[1]} (right). Therefore, driving forward
+`/joint_states.velocity[0]` (left) and negative
+`/joint_states.velocity[1]` (right). Therefore, driving forward
 gives positive velocity on both wheels.
 
 ## Q1. Identifying a Kinematic Model (20 pts)
@@ -147,7 +143,7 @@ Here, $b$ is the wheel separation. This follows the sign convention that a left 
 
 **Q2.2:** 
 
-![Foxglove showing plots of joint states velocities and predicted velocities of each wheel](../images/Q2.2.png)
+![Foxglove showing plots of joint states velocities and predicted velocities of each wheel](./Q2.2.png)
 
 **Q2.3:** 
 
@@ -157,7 +153,7 @@ The predicted wheel velocities are very similar to the predicted/calculated valu
 
 **Q3.2:** 
 
-![Foxglove showing plots of velocities (linear and angular) and  computed velocities (linear and angular) of each wheel](../images/Q3.2.png)
+![Foxglove showing plots of velocities (linear and angular) and  computed velocities (linear and angular) of each wheel](./Q3.2.png)
 
 The commanded and actual linear and angular velocities match fairly closely overall. The actual velocity follows the same general trend as the commanded velocity, including changes in direction and turning rate. However, around rapid changes in the command, the actual velocity sometimes lags slightly behind or does not reach exactly the same value. These differences can be caused by friction, slip, and that the commanded velocity can change immediately, while the robot has finite acceleration and cannot instantaneously change its motion.
 
