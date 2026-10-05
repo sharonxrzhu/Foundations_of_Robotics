@@ -157,13 +157,30 @@ The predicted wheel velocities are very similar to the predicted/calculated valu
 
 **Q3.2:** 
 
+![Foxglove showing plots of velocities (linear and angular) and  computed velocities (linear and angular) of each wheel](../images/Q3.2.png)
+
+The commanded and actual linear and angular velocities match fairly closely overall. The actual velocity follows the same general trend as the commanded velocity, including changes in direction and turning rate. However, around rapid changes in the command, the actual velocity sometimes lags slightly behind or does not reach exactly the same value. These differences can be caused by friction, slip, and that the commanded velocity can change immediately, while the robot has finite acceleration and cannot instantaneously change its motion.
+
 ## Q4. Calculating an Odometry Solution (30 pts)
 
 **Q4.3:** 
 
+Q4.3:
+Observations:
+1. When the robot wheels are both in the air, the actual robot is not moving forward, but in the simulation, it still shows the robot moving forward. Since the odometry assumes that wheel rotation corresponds to motion along the ground, it cannot tell that the wheels are spinning without actually translating the robot.
+2. When holding a wheel down, and the joystick input is having the robot move forward, the simulation shows the robot rotating in place, presumably because the robot provides feedback on the left and right wheel's state. So, even though both wheels should have a positive linear velocity, the wheel being held down cannot move, so only one wheel has a substantial nonzero velocity. Since the rover's angular velocity depends on the difference between the left and right wheel velocities, the odometry interprets this difference as the robot turning. If we weren't holding the robot in the air and only one of the wheels actually moved, the robot would be spinning.
+3. When driving into the wall, the wheels are still spinning, so the simulation reflects the robot moving forward even with a wall in front. This causes the estimated position to continue changing even though the rover's actual position is fixed.
+Overall, these experiments show that the odometry depends on the wheel velocities and assumes that the wheel motion accurately represents the rover's actual motion. This assumption can break when the wheels are off the ground, hit's an obstacle, or slipping.
+
+Improvement:
+Add an accelerometer, since the current odometry depends on the two wheels' velocities only. Adding an accelerometer would provide additional information that helps the robot understand whether the robot is moving as expected or is actually stopped. We could also use a gyroscope to independently measure the rover's rotation. Combining this IMU data with the wheel odometry could help reduce errors when the wheel motion does not match the rover's actual motion.
 
 ## Feedback
 
 **How much time did you spend on this assignment?** 
 
+3.5 hours
+
 **Do you have any feedback for this assignment?**
+
+Please set this up as a github. Had many problems with three people working on it together but docker wouldn't open in a cloned github so we had to copy paste, push, pull, copy paste back, and then run tests.
