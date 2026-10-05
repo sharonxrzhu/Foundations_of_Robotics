@@ -147,7 +147,11 @@ Here, $b$ is the wheel separation. This follows the sign convention that a left 
 
 **Q2.2:** 
 
+![Foxglove showing plots of joint states velocities and predicted velocities of each wheel](../images/Q2.2.png)
+
 **Q2.3:** 
+
+The predicted wheel velocities are very similar to the predicted/calculated values. The remaining differences are most noticeable around rapid changes in velocity and at some of the peaks. This could be caused by friction and that real wheel velocity cannot change instantaneously and may lag slightly behind the commanded value.
 
 ## Q3. Forward Kinematics (20 pts)
 
